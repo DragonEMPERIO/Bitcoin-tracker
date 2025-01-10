@@ -93,7 +93,7 @@
       <button onclick="setCurrency('brl')">BRL</button>
     </div>
     <canvas id="price-chart" width="700" height="300"></canvas>
-    <footer>Data updated every 40 seconds</footer>
+    <footer>Data updated every 60 seconds</footer>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -174,7 +174,7 @@
     }
 
     // Atualiza os dados a cada 10 segundos
-    setInterval(fetchBitcoinData, 40000);
+    setInterval(fetchBitcoinData, 60000);
     fetchBitcoinData();
   </script>
 </body>
