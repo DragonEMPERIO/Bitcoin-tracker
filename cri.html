@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Cripto - Bitcoin e USD</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #0f0f1d, #2b0045);
+      color: white;
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(to right, #ff9900, #ffcc00);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: black;
+    }
+
+    header h1 {
+      font-size: 20px;
+    }
+
+    .dashboard {
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(26, 0, 51, 0.9);
+      box-shadow: 0 0 20px #00ffcc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card h2 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 16px;
+    }
+
+    /* Botão de configurações */
+    .settings-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff9900;
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ffd700;
+      color: black;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .settings-btn:hover {
+      background: #ffd700;
+    }
+
+    /* Estilos do modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      background: rgba(26, 0, 51, 0.95);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 20px #ff9900;
+      text-align: center;
+      color: white;
+      z-index: 1000;
+    }
+
+    .modal h2 {
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+
+    .modal button {
+      background: linear-gradient(to right, #ff9900, #ffcc00);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff9900;
+    }
+
+    .modal button:hover {
+      background: linear-gradient(to right, #ffcc00, #ffd700);
+    }
+
+    /* Fundo escuro quando o modal está aberto */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+    }
+
+    .modal-overlay.active,
+    .modal.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dashboard Cripto</h1>
+    <span>Bem-vindo, Trader!</span>
+  </header>
+
+  <div class="dashboard">
+    <div class="card" id="bitcoin-card">
+      <h2>Gráfico do Bitcoin em Tempo Real</h2>
+      <p>Clique para visualizar o gráfico completo.</p>
+    </div>
+
+    <div class="card" id="usd-card">
+      <h2>Gráfico do USD em Tempo Real</h2>
+      <p>Clique para visualizar o gráfico completo.</p>
+    </div>
+  </div>
+
+  <!-- Botão de configurações -->
+  <div class="settings-btn" id="settings-btn">⚙️</div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal">
+    <h2>Configurações em Desenvolvimento</h2>
+    <p>As configurações desta aplicação ainda estão em desenvolvimento. Por favor, aguarde a próxima atualização para acessar esta funcionalidade.</p>
+    <button id="close-modal">Entendido</button>
+  </div>
+
+  <script>
+    const settingsBtn = document.getElementById("settings-btn");
+    const modal = document.getElementById("modal");
+    const modalOverlay = document.getElementById("modal-overlay");
+    const closeModal = document.getElementById("close-modal");
+    const bitcoinCard = document.getElementById("bitcoin-card");
+    const usdCard = document.getElementById("usd-card");
+
+    // Abrir modal de configurações
+    settingsBtn.addEventListener("click", () => {
+      modal.classList.add("active");
+      modalOverlay.classList.add("active");
+    });
+
+    // Fechar modal de configurações
+    closeModal.addEventListener("click", () => {
+      modal.classList.remove("active");
+      modalOverlay.classList.remove("active");
+    });
+
+    // Redirecionar para bitcoin.html ao clicar no card do Bitcoin
+    bitcoinCard.addEventListener("click", () => {
+      window.location.href = "bitcoin.html";
+    });
+
+    // Redirecionar para Us.html ao clicar no card do USD
+    usdCard.addEventListener("click", () => {
+      window.location.href = "Us.html";
+    });
+  </script>
+</body>
+</html>

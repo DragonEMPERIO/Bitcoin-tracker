@@ -1,1 +1,430 @@
-console.log('Hello World!');
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilionário Cripto</title>
+  <style>
+    /* Estilo geral */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #0f0f1d, #2b0045);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Fundo do gráfico */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Modal geral */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: #1a0033;
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: #00ffcc;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    .modal-content h2 {
+      color: #ffd700;
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .code-display {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      background: linear-gradient(to right, #ff9900, #ffcc00);
+      color: black;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 15px 0;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .submit-code {
+      margin-top: 20px;
+      background: linear-gradient(to right, #ff9900, #ffcc00);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff9900;
+    }
+
+    .submit-code:hover {
+      background: linear-gradient(to right, #ffcc00, #ffd700);
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    /* Tela de login */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26, 0, 51, 0.9);
+      box-shadow: 0 0 20px #00ffcc;
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      width: 85%;
+      max-width: 350px;
+    }
+
+    .container h2 {
+      color: #ffd700;
+    }
+
+    .container input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .container button {
+      margin-top: 20px;
+      background: linear-gradient(to right, #ff9900, #ffcc00);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff9900;
+    }
+
+    .container button:hover {
+      background: linear-gradient(to right, #ffcc00, #ffd700);
+    }
+
+    .terms {
+      margin-top: 20px;
+      font-size: 14px;
+      text-align: left;
+      width: 80%;
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .terms a {
+      color: #00ffcc;
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+    
+    
+    
+    /* Modal de alerta para erro de login (#modal43) */
+#modal43 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+#modal43.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+#modal43 .modal-content {
+  background: #1a0033;
+  border-radius: 15px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  color: #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+}
+
+#modal43 .modal-content h2 {
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+#modal43 .modal-content p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+#modal43 .close-modal {
+  margin-top: 20px;
+  background: linear-gradient(to right, #ff9900, #ffcc00);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff9900;
+}
+
+#modal43 .close-modal:hover {
+  background: linear-gradient(to right, #ffcc00, #ffd700);
+}
+    
+    
+    
+    
+    
+    
+    
+    
+  </style>
+</head>
+<body>
+  <div class="background">
+    <canvas id="graph"></canvas>
+  </div>
+
+  <!-- Modal do código -->
+  <div class="modal active" id="code-modal">
+    <div class="modal-content">
+      <h2>Confirmação de Código</h2>
+      <p>Insira o código de segurança abaixo para continuar:</p>
+      <div class="code-display" id="display-code"></div>
+      <input type="text" id="security-code" placeholder="Digite o código aqui" />
+      <button class="submit-code" id="submit-code">Confirmar</button>
+      <p class="error" id="error-message"></p>
+    </div>
+  </div>
+
+  <!-- Modal dos Termos -->
+  <div class="modal" id="terms-modal">
+    <div class="modal-content">
+      <h2>Termos do Site</h2>
+      <p>1. Segurança do Site
+Usamos medidas avançadas para proteger sua navegação. O uso seguro é de sua responsabilidade.
+</p>
+      <p>2. Transparência e Confiança
+Garantimos anonimato total e não rastreamos nenhuma atividade do usuário.</p>
+      <p>3. Proibição de Atividades Ilegais
+Qualquer uso indevido ou ilegal é de total responsabilidade do usuário.
+</p>
+      <p>4. Aceitação dos Termos
+Ao acessar o site, você automaticamente concorda com todos os termos apresentados.
+</p>
+    
+    
+      <button class="submit-code" id="close-terms">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Tela de Login -->
+  <div class="container" style="visibility: hidden; opacity: 0;">
+    <h2>Login - Mundo Cripto</h2>
+    <input type="text" id="username" placeholder="Digite seu nome de usuário" />
+    <input type="password" id="password" placeholder="Digite sua senha" />
+    <button id="login-btn">Entrar</button>
+    <div class="terms">
+      <p>
+        <a href="#" id="terms-link">Termos do Site</a>
+      </p>
+    </div>
+  </div>
+<!-- Modal de erro de login -->
+<div id="modal43">
+  <div class="modal-content">
+    <h2>Atenção!</h2>
+    <p>Por favor, preencha todos os campos para continuar.</p>
+    <button class="close-modal" id="close-modal43">Fechar</button>
+  </div>
+</div>
+  <script>
+    const canvas = document.getElementById("graph");
+    const ctx = canvas.getContext("2d");
+    const modalCode = document.getElementById("code-modal");
+    const termsModal = document.getElementById("terms-modal");
+    const containerLogin = document.querySelector(".container");
+    const submitCodeBtn = document.getElementById("submit-code");
+    const securityCodeInput = document.getElementById("security-code");
+    const errorMessage = document.getElementById("error-message");
+    const displayCode = document.getElementById("display-code");
+    const termsLink = document.getElementById("terms-link");
+    const closeTerms = document.getElementById("close-terms");
+    const loginBtn = document.getElementById("login-btn");
+
+    let generatedCode = generateCode();
+
+    // Gerar código de segurança dinâmico
+    function generateCode() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let code = "";
+      for (let i = 0; i < 10; i++) {
+        code += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return code;
+    }
+
+    // Exibir código no modal
+    displayCode.textContent = generatedCode;
+
+    // Validar código
+    submitCodeBtn.addEventListener("click", () => {
+      if (securityCodeInput.value === generatedCode) {
+        modalCode.classList.remove("active");
+        containerLogin.style.visibility = "visible";
+        containerLogin.style.opacity = "1";
+      } else {
+        errorMessage.textContent = "Código incorreto. Tente novamente.";
+      }
+    });
+
+
+
+    // Abrir modal dos termos
+    termsLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      termsModal.classList.add("active");
+    });
+
+    // Fechar modal dos termos
+    closeTerms.addEventListener("click", () => {
+      termsModal.classList.remove("active");
+    });
+
+    // Gráfico animado no fundo
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function drawGraph() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+
+      const waveLength = 100;
+      const amplitude = 80;
+      const speed = Date.now() / 500;
+      for (let x = 0; x < canvas.width; x++) {
+        const y = canvas.height / 2 + Math.sin((x / waveLength + speed) * Math.PI * 2) * amplitude;
+        ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = "rgba(0, 255, 255, 0.8)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      requestAnimationFrame(drawGraph);
+    }
+
+    drawGraph();
+  </script>
+  
+  
+  <script>
+    
+    // Referências ao modal e botão de fechar
+const modal43 = document.getElementById("modal43");
+const closeModal43 = document.getElementById("close-modal43");
+
+loginBtn.addEventListener("click", () => {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!username || !password) {
+    // Exibir o modal caso os campos estejam vazios
+    modal43.classList.add("active");
+  } else {
+    // Redirecionar para outra página
+    window.location.href = "cri.html";
+  }
+});
+
+// Fechar o modal ao clicar no botão "Fechar"
+closeModal43.addEventListener("click", () => {
+  modal43.classList.remove("active");
+});
+  </script>
+</body>
+</html>
